@@ -1,6 +1,6 @@
 import pandas as pd
 
-ETSY_CSV_FILEPATH = "EtsyListingsDownload.csv"
+ETSY_CSV_FILEPATH = "EtsyListingsDownload-2.csv"
 ETSY_INCLUDE_VARIANTS = True
 
 EXPORT_NEW_CSV_FILEPATH = "SKLAD_NAPA_711.csv"
@@ -79,14 +79,17 @@ def main():
     etsy_data = get_etsy_data()
     export_data = get_export_data(etsy_data.keys())
 
+    sku_problems = []
+
     for sku in etsy_data.keys():
         etsy_q = etsy_data[sku]["quantity"]
 
         try:
             export_q = export_data[sku]
         except KeyError:
-            print(
-                f'{sku} z Etsy není v exportu ({etsy_data[sku]["title"][:35].rstrip()})')
+            sku_problems.append(
+                f'{sku} z Etsy není v exportu ({etsy_data[sku]["title"][:35].rstrip()})'
+            )
             continue
 
         if type(etsy_q) is not int:
@@ -104,6 +107,10 @@ def main():
                 sep="\n",
                 end="\n\n"
             )
+
+    for problem in sku_problems:
+        print(problem)
+    print("Celkem:", len(sku_problems))
 
 
 if __name__ == "__main__":
