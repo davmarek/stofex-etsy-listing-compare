@@ -9,7 +9,11 @@ EXPORT_QUATITY_COLUMN_NAME = "Stav zásoby"
 
 
 def get_etsy_data() -> dict:
-    df = pd.read_csv(ETSY_CSV_FILEPATH)
+    try:
+        df = pd.read_csv(ETSY_CSV_FILEPATH)
+    except Exception:
+        print(f"Soubor \"{ETSY_CSV_FILEPATH}\" nenalezen")
+        exit(1)
 
     df.pop("DESCRIPTION")
     df.pop("PRICE")
@@ -55,7 +59,11 @@ def get_etsy_data() -> dict:
 
 
 def get_export_data(etsy_keys) -> dict:
-    df = pd.read_csv(EXPORT_NEW_CSV_FILEPATH, delimiter=";")
+    try:
+        df = pd.read_csv(EXPORT_NEW_CSV_FILEPATH, delimiter=";")
+    except Exception:
+        print(f"Soubor \"{EXPORT_NEW_CSV_FILEPATH}\" nenalezen")
+        exit(1)
 
     export_data = {}
 
