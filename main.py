@@ -87,8 +87,9 @@ def main():
         try:
             export_q = export_data[sku]
         except KeyError:
+            title = etsy_data[sku]["title"][:35].rstrip()
             sku_problems.append(
-                f'{sku} z Etsy není v exportu ({etsy_data[sku]["title"][:35].rstrip()})'
+                f'{sku:<13} z Etsy není v exportu ({title})'
             )
             continue
 
